@@ -1,9 +1,14 @@
 <?php 
 	
-	require("../../config.php");
+	require("../../../config.php");
 	var_dump($GLOBALS);
 	require("./functions.php");
 	
+	
+	// kui on sisseloginud siis suunan data lehele
+	if (isset($_SESSION["userId"])) {
+		header("Location: data.php");
+	}
 	 
 	//var_dump($_GET);
 	
@@ -89,14 +94,16 @@
 		
 	}
 	
+	$notice = "";
 	//kas kasutaja tahab sisse logida
 	if ( isset($_POST["loginEmail"]) &&
 		 isset($_POST["loginPassword"]) &&
 		 !empty($_POST["loginPassword"]) &&
 		 !empty($_POST["loginPassword"])
 	) {
-		login($_POST["loginEmail"], $_POST["loginPassword"]);
+		$notice = login($_POST["loginEmail"], $_POST["loginPassword"]);
 	}
+	
 
 ?>
 <!DOCTYPE html>
@@ -107,7 +114,7 @@
 	<body>
 
 		<h1>Logi sisse</h1>
-		
+		<p style="color:red;"> <?=$notice;?></p>
 		<form method="POST" >
 			
 			<label>E-post</label><br>
@@ -156,6 +163,7 @@
 			<?php } ?>
 			
 			<input type="submit" value="Loo kasutaja">
+		
 		
 		</form>
 

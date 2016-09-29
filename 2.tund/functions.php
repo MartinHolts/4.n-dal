@@ -1,5 +1,10 @@
 <?php
 
+	// see fail peab olema siis seotud kõigiga kus 
+	// tahame sessiooni kasutada
+	// saab kasutada nüüd $_SESSION muutujat
+	session_start();
+
 	$database = "if16_martholt_4";
 	
 	function signup($email, $password) {
@@ -20,6 +25,8 @@
 	}
 
 	function login($email, $password) {
+		
+		$notice = "";
 		
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
 		
@@ -48,16 +55,29 @@
 			
 			if($hash == $passwordFromDb){
 				echo "Kasutaja $id logis sisse";
+				
+				$_SESSION["userId"] = $id;
+				$_SESSION["userEmail"] = $emailFromDb;
+				
+				header("Location: data.php");
+				
+				
+				
+				
+				
+				
+				
 			} else {
-				echo "parool";
+				$notice = "parool vale";
 			}
 			
 		} else {
 			
 			//ei olnud ühtegi rida
-			echo "Sellise emailiga $email kasutjat ei ole olemas";
+			$notice =  "Sellise emailiga $email kasutjat ei ole olemas";
 		}
 		
+		return $notice;
 		
 	}
 	
